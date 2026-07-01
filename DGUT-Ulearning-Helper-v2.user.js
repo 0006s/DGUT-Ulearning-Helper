@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name                      优学院DGUT版 v2.0优化版
-// @version                   2.1
-// @description               适配DGUT优学院（自动静音播放、自动做练习题、自动翻页、修改播放速率）- 重构优化版
+// @version                   2.2
+// @description               适配DGUT优学院（自动静音播放、自动做练习题、自动翻页、修改播放速率、浅色/深色主题切换）- 重构优化版
 // @author                    Linus
 // @match                     https://ua.dgut.edu.cn/learnCourse/learnCourse.html*
 // @icon                      https://lms.dgut.edu.cn/ulearning/favicon.ico
@@ -35,7 +35,7 @@
     const CONFIG_KEYS = [
         'playbackRate', 'autoPlay', 'autoMute', 'autoAdjustRate',
         'autoFillAnswers', 'showAnswers', 'autoAnswerSingle',
-        'autoAnswerMulti', 'autoAnswerJudge', 'autoAnswerBlank'
+        'autoAnswerMulti', 'autoAnswerJudge', 'autoAnswerBlank', 'lightTheme'
     ];
 
     const STORAGE_PREFIX = 'ulearn_';
@@ -53,6 +53,7 @@
         autoAnswerMulti: true,
         autoAnswerJudge: true,
         autoAnswerBlank: true,
+        lightTheme: false,
         maxRetryCount: 7,
 
         load() {
@@ -861,6 +862,40 @@
                 .log-info {color:#378ADD}
                 .log-warn {color:#ef9f27}
                 .log-error {color:#e24b4a}
+
+                /* ========== 浅色主题 ========== */
+                .ulearn-panel.light {
+                    background:#ffffff;color:#333333;
+                    border:0.5px solid rgba(0,0,0,0.1);
+                    box-shadow:0 8px 32px rgba(0,0,0,0.12);
+                }
+                .ulearn-panel.light .ulearn-header {background:#f0f2f5}
+                .ulearn-panel.light .ulearn-header-title {color:#333}
+                .ulearn-panel.light .ulearn-header-btn {background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.08);color:#666}
+                .ulearn-panel.light .ulearn-header-btn:hover {background:rgba(0,0,0,0.1);color:#333}
+                .ulearn-panel.light .ulearn-status {background:rgba(46,204,113,0.08)}
+                .ulearn-panel.light .ulearn-status.paused {background:rgba(231,76,60,0.08)}
+                .ulearn-panel.light .ulearn-card {background:rgba(0,0,0,0.02);border-color:rgba(0,0,0,0.06)}
+                .ulearn-panel.light .ulearn-card-row + .ulearn-card-row {border-top:0.5px solid rgba(0,0,0,0.04)}
+                .ulearn-panel.light .ulearn-card-title {color:#999}
+                .ulearn-panel.light .ulearn-rate-value {color:#333}
+                .ulearn-panel.light .ulearn-rate-unit {color:#999}
+                .ulearn-panel.light .ulearn-rate-btn.minus {background:rgba(0,0,0,0.05);color:#666}
+                .ulearn-panel.light .ulearn-rate-btn.minus:hover {background:rgba(0,0,0,0.1);color:#333}
+                .ulearn-panel.light .ulearn-toggle {background:#ccc}
+                .ulearn-panel.light .ulearn-toggle.active {background:#2ecc71}
+                .ulearn-panel.light .ulearn-toggle-knob {background:#fff}
+                .ulearn-panel.light .ulearn-toggle-btn {background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.08);color:#666}
+                .ulearn-panel.light .ulearn-toggle-btn:hover {background:rgba(0,0,0,0.1);color:#333}
+                .ulearn-panel.light .ulearn-progress-bar {background:rgba(0,0,0,0.06)}
+                .ulearn-panel.light .ulearn-progress-text {color:#999}
+                .ulearn-panel.light .ulearn-log {background:rgba(0,0,0,0.04)}
+                .ulearn-panel.light .ulearn-log::-webkit-scrollbar-thumb {background:rgba(0,0,0,0.15)}
+                .ulearn-panel.light .log-time {color:#999}
+                .ulearn-panel.light .ulearn-save-btn {background:#378ADD}
+                .ulearn-panel.light .ulearn-save-btn:hover {background:#2a6fb8}
+                .ulearn-panel.light .ulearn-clear-btn {background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.06);color:#999}
+                .ulearn-panel.light .ulearn-clear-btn:hover {background:rgba(0,0,0,0.08);color:#666}
             `;
             document.head.appendChild(style);
         }
@@ -870,8 +905,9 @@
             panel.className = 'ulearn-panel';
             panel.innerHTML = `
                 <div class="ulearn-header">
-                    <span class="ulearn-header-title">DGUT 优学院助手 v2.1</span>
+                    <span class="ulearn-header-title">DGUT 优学院助手 v2.2</span>
                     <div class="ulearn-header-btns">
+                        <div class="ulearn-header-btn" id="themeBtn" title="切换主题">🌓</div>
                         <div class="ulearn-header-btn" id="collapseBtn" title="折叠">▼</div>
                     </div>
                 </div>
@@ -1041,7 +1077,8 @@
 
                 const moveHandler = (e) => {
                     this.panel.style.left = `${e.clientX - offsetX}px`;
-                    this.panel.style.top = `${e.clientY - offsetY}px`;
+                    const newTop = Math.max(10, e.clientY - offsetY);
+                    this.panel.style.top = `${newTop}px`;
                     this.panel.style.right = 'auto';
                 };
 
@@ -1054,6 +1091,14 @@
                 document.addEventListener('mousemove', moveHandler);
                 document.addEventListener('mouseup', upHandler);
             };
+
+            // 主题切换
+            document.getElementById('themeBtn').addEventListener('click', () => {
+                AppConfig.lightTheme = !AppConfig.lightTheme;
+                this.applyTheme(AppConfig.lightTheme);
+                AppConfig.save();
+                Logger.log(`已切换为${AppConfig.lightTheme ? '浅色' : '深色'}主题`, 'info');
+            });
 
             // 折叠/展开
             document.getElementById('collapseBtn').addEventListener('click', () => {
@@ -1172,6 +1217,14 @@
             });
         }
 
+        applyTheme(isLight) {
+            if (isLight) {
+                this.panel.classList.add('light');
+            } else {
+                this.panel.classList.remove('light');
+            }
+        }
+
         syncConfigToUI() {
             this.setToggleActive('autoPlay', AppConfig.autoPlay);
             this.setToggleActive('autoMute', AppConfig.autoMute);
@@ -1181,6 +1234,7 @@
             this.setToggleActive('autoAnswerSingle', AppConfig.autoAnswerSingle);
             this.setToggleActive('autoAnswerJudge', AppConfig.autoAnswerJudge);
             this.setToggleActive('autoAnswerBlank', AppConfig.autoAnswerBlank);
+            this.applyTheme(AppConfig.lightTheme);
             document.getElementById('rateInput').value = AppConfig.playbackRate;
 
             AppState.isPaused = localStorage.getItem(STORAGE_PREFIX + 'paused') === 'true';
