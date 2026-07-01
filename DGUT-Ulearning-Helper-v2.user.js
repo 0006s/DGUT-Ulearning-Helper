@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name                      优学院DGUT版 v2.0优化版
-// @version                   2.2
+// @version                   2.3
 // @description               适配DGUT优学院（自动静音播放、自动做练习题、自动翻页、修改播放速率、浅色/深色主题切换）- 重构优化版
 // @author                    Linus
 // @match                     https://ua.dgut.edu.cn/learnCourse/learnCourse.html*
@@ -715,80 +715,80 @@
             style.textContent = `
                 .ulearn-panel {
                     position:fixed;top:80px;right:30px;z-index:999999;
-                    background:#1a1a2e;color:#e0e0e0;padding:0;
+                    background:#1e1e2e;color:#cdd6f4;padding:0;
                     border-radius:14px;font-size:13px;width:310px;
                     border:0.5px solid rgba(255,255,255,0.08);
-                    box-shadow:0 8px 32px rgba(0,0,0,0.4);
+                    box-shadow:0 8px 32px rgba(0,0,0,0.5);
                     cursor:move;overflow:hidden;
                     transition:height 0.3s ease;
                     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
                 }
                 .ulearn-panel:hover {opacity:1}
                 .ulearn-header {
-                    background:#16213e;padding:10px 14px;
+                    background:#181825;padding:10px 14px;
                     display:flex;justify-content:space-between;align-items:center;
                     user-select:none;
                 }
-                .ulearn-header-title {font-size:13px;font-weight:500;color:#e0e0e0}
+                .ulearn-header-title {font-size:13px;font-weight:600;color:#cdd6f4}
                 .ulearn-header-btns {display:flex;gap:6px}
                 .ulearn-header-btn {
                     width:24px;height:24px;border-radius:6px;
-                    background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.1);
-                    color:#aaa;cursor:pointer;font-size:11px;
+                    background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.08);
+                    color:#9399b2;cursor:pointer;font-size:11px;
                     display:flex;align-items:center;justify-content:center;
                     transition:background 0.15s;
                 }
-                .ulearn-header-btn:hover {background:rgba(255,255,255,0.15);color:#fff}
+                .ulearn-header-btn:hover {background:rgba(255,255,255,0.12);color:#cdd6f4}
                 .ulearn-body {padding:10px 14px 14px}
                 .ulearn-body.hidden {display:none}
 
                 .ulearn-status {
                     display:flex;align-items:center;justify-content:space-between;
                     padding:8px 12px;border-radius:8px;margin-bottom:10px;
-                    background:rgba(46,204,113,0.12);transition:background 0.3s;
+                    background:rgba(166,227,161,0.1);transition:background 0.3s;
                 }
-                .ulearn-status.paused {background:rgba(231,76,60,0.12)}
+                .ulearn-status.paused {background:rgba(243,139,168,0.1)}
                 .ulearn-status-left {display:flex;align-items:center;gap:8px}
                 .ulearn-status-dot {
                     width:8px;height:8px;border-radius:50%;
-                    background:#2ecc71;transition:background 0.3s;
-                    box-shadow:0 0 6px rgba(46,204,113,0.5);
+                    background:#a6e3a1;transition:background 0.3s;
+                    box-shadow:0 0 6px rgba(166,227,161,0.4);
                 }
                 .ulearn-status.paused .ulearn-status-dot {
-                    background:#e74c3c;
-                    box-shadow:0 0 6px rgba(231,76,60,0.5);
+                    background:#f38ba8;
+                    box-shadow:0 0 6px rgba(243,139,168,0.4);
                 }
-                .ulearn-status-text {font-size:12px;font-weight:500;color:#2ecc71;transition:color 0.3s}
-                .ulearn-status.paused .ulearn-status-text {color:#e74c3c}
+                .ulearn-status-text {font-size:12px;font-weight:500;color:#a6e3a1;transition:color 0.3s}
+                .ulearn-status.paused .ulearn-status-text {color:#f38ba8}
                 .ulearn-toggle-btn {
-                    padding:4px 14px;border-radius:6px;border:0.5px solid rgba(255,255,255,0.12);
-                    background:rgba(255,255,255,0.06);color:#ccc;font-size:11px;cursor:pointer;
+                    padding:4px 14px;border-radius:6px;border:0.5px solid rgba(255,255,255,0.08);
+                    background:rgba(255,255,255,0.05);color:#9399b2;font-size:11px;cursor:pointer;
                     transition:all 0.15s;
                 }
-                .ulearn-toggle-btn:hover {background:rgba(255,255,255,0.12)}
+                .ulearn-toggle-btn:hover {background:rgba(255,255,255,0.1);color:#cdd6f4}
 
                 .ulearn-progress {margin-bottom:10px}
                 .ulearn-progress-bar {
                     height:4px;border-radius:2px;
-                    background:rgba(255,255,255,0.08);overflow:hidden;margin-bottom:4px;
+                    background:rgba(255,255,255,0.06);overflow:hidden;margin-bottom:4px;
                 }
                 .ulearn-progress-fill {
                     height:100%;border-radius:2px;
-                    background:linear-gradient(90deg,#378ADD,#5EA0E8);
+                    background:linear-gradient(90deg,#89b4fa,#b4befe);
                     transition:width 0.5s ease;
                 }
                 .ulearn-progress-text {
                     display:flex;justify-content:space-between;
-                    font-size:10px;color:#5F5E5A;
+                    font-size:10px;color:#585b70;
                 }
 
                 .ulearn-card {
-                    background:rgba(255,255,255,0.03);
-                    border:0.5px solid rgba(255,255,255,0.05);
+                    background:#313244;
+                    border:0.5px solid rgba(255,255,255,0.04);
                     border-radius:10px;padding:10px 12px;margin-bottom:8px;
                 }
                 .ulearn-card-title {
-                    font-size:10px;font-weight:500;color:#5F5E5A;
+                    font-size:10px;font-weight:600;color:#585b70;
                     text-transform:uppercase;letter-spacing:0.5px;
                     margin-bottom:8px;
                 }
@@ -799,9 +799,9 @@
                 .ulearn-card-row + .ulearn-card-row {border-top:0.5px solid rgba(255,255,255,0.04)}
 
                 .ulearn-rate-value {
-                    font-size:26px;font-weight:500;color:#e0e0e0;line-height:1;
+                    font-size:26px;font-weight:600;color:#cdd6f4;line-height:1;
                 }
-                .ulearn-rate-unit {font-size:13px;color:#5F5E5A;margin-left:2px}
+                .ulearn-rate-unit {font-size:13px;color:#585b70;margin-left:2px}
                 .ulearn-rate-controls {display:flex;gap:6px;margin-left:auto}
                 .ulearn-rate-btn {
                     width:30px;height:30px;border-radius:8px;border:none;
@@ -810,92 +810,92 @@
                     transition:background 0.15s;
                 }
                 .ulearn-rate-btn.minus {
-                    background:rgba(255,255,255,0.06);color:#aaa;
+                    background:rgba(255,255,255,0.05);color:#9399b2;
                 }
-                .ulearn-rate-btn.minus:hover {background:rgba(255,255,255,0.12);color:#fff}
+                .ulearn-rate-btn.minus:hover {background:rgba(255,255,255,0.1);color:#cdd6f4}
                 .ulearn-rate-btn.plus {
-                    background:rgba(55,138,221,0.2);color:#378ADD;
+                    background:rgba(137,180,250,0.15);color:#89b4fa;
                 }
-                .ulearn-rate-btn.plus:hover {background:rgba(55,138,221,0.35)}
+                .ulearn-rate-btn.plus:hover {background:rgba(137,180,250,0.3)}
 
                 .ulearn-toggle {
                     position:relative;width:34px;height:18px;border-radius:9px;
-                    background:#5F5E5A;cursor:pointer;transition:background 0.2s;
+                    background:#45475a;cursor:pointer;transition:background 0.2s;
                     flex-shrink:0;
                 }
-                .ulearn-toggle.active {background:#2ecc71}
+                .ulearn-toggle.active {background:#a6e3a1}
                 .ulearn-toggle-knob {
                     position:absolute;top:2px;left:2px;
                     width:14px;height:14px;border-radius:50%;
-                    background:#e0e0e0;transition:transform 0.2s;
+                    background:#cdd6f4;transition:transform 0.2s;
                 }
                 .ulearn-toggle.active .ulearn-toggle-knob {transform:translateX(16px)}
 
                 .ulearn-save-btn {
                     width:100%;padding:9px 0;border-radius:8px;border:none;
-                    background:#378ADD;color:#fff;font-size:13px;font-weight:500;
+                    background:#89b4fa;color:#1e1e2e;font-size:13px;font-weight:600;
                     cursor:pointer;transition:background 0.15s;margin-top:4px;
                 }
-                .ulearn-save-btn:hover {background:#2a6fb8}
+                .ulearn-save-btn:hover {background:#74c7ec}
 
                 .ulearn-log-header {
                     display:flex;justify-content:space-between;align-items:center;
                     margin-top:10px;margin-bottom:6px;
                 }
-                .ulearn-log-title {font-size:10px;font-weight:500;color:#5F5E5A;text-transform:uppercase;letter-spacing:0.5px}
+                .ulearn-log-title {font-size:10px;font-weight:600;color:#585b70;text-transform:uppercase;letter-spacing:0.5px}
                 .ulearn-clear-btn {
-                    background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.08);
-                    color:#666;font-size:10px;padding:2px 8px;border-radius:4px;cursor:pointer;
+                    background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.06);
+                    color:#585b70;font-size:10px;padding:2px 8px;border-radius:4px;cursor:pointer;
                 }
-                .ulearn-clear-btn:hover {background:rgba(255,255,255,0.1);color:#aaa}
+                .ulearn-clear-btn:hover {background:rgba(255,255,255,0.1);color:#9399b2}
                 .ulearn-log {
                     height:110px;overflow:auto;
-                    background:rgba(0,0,0,0.25);border-radius:8px;
+                    background:#181825;border-radius:8px;
                     padding:6px 8px;font-size:11px;line-height:1.6;
                     font-family:"SF Mono","Cascadia Code",Consolas,monospace;
                 }
                 .ulearn-log::-webkit-scrollbar {width:4px}
                 .ulearn-log::-webkit-scrollbar-track {background:transparent}
-                .ulearn-log::-webkit-scrollbar-thumb {background:rgba(255,255,255,0.1);border-radius:2px}
-                .log-time {color:#5F5E5A}
-                .log-success {color:#2ecc71}
-                .log-info {color:#378ADD}
-                .log-warn {color:#ef9f27}
-                .log-error {color:#e24b4a}
+                .ulearn-log::-webkit-scrollbar-thumb {background:rgba(255,255,255,0.08);border-radius:2px}
+                .log-time {color:#585b70}
+                .log-success {color:#a6e3a1}
+                .log-info {color:#89b4fa}
+                .log-warn {color:#f9e2af}
+                .log-error {color:#f38ba8}
 
                 /* ========== 浅色主题 ========== */
                 .ulearn-panel.light {
-                    background:#ffffff;color:#333333;
-                    border:0.5px solid rgba(0,0,0,0.1);
-                    box-shadow:0 8px 32px rgba(0,0,0,0.12);
+                    background:#ffffff;color:#4c4f69;
+                    border:0.5px solid rgba(0,0,0,0.08);
+                    box-shadow:0 8px 32px rgba(0,0,0,0.08);
                 }
-                .ulearn-panel.light .ulearn-header {background:#f0f2f5}
-                .ulearn-panel.light .ulearn-header-title {color:#333}
-                .ulearn-panel.light .ulearn-header-btn {background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.08);color:#666}
-                .ulearn-panel.light .ulearn-header-btn:hover {background:rgba(0,0,0,0.1);color:#333}
-                .ulearn-panel.light .ulearn-status {background:rgba(46,204,113,0.08)}
-                .ulearn-panel.light .ulearn-status.paused {background:rgba(231,76,60,0.08)}
-                .ulearn-panel.light .ulearn-card {background:rgba(0,0,0,0.02);border-color:rgba(0,0,0,0.06)}
+                .ulearn-panel.light .ulearn-header {background:#e6e9ef}
+                .ulearn-panel.light .ulearn-header-title {color:#4c4f69}
+                .ulearn-panel.light .ulearn-header-btn {background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.06);color:#6c6f85}
+                .ulearn-panel.light .ulearn-header-btn:hover {background:rgba(0,0,0,0.08);color:#4c4f69}
+                .ulearn-panel.light .ulearn-status {background:rgba(166,227,161,0.25)}
+                .ulearn-panel.light .ulearn-status.paused {background:rgba(243,139,168,0.15)}
+                .ulearn-panel.light .ulearn-card {background:#eff1f5;border-color:rgba(0,0,0,0.04)}
                 .ulearn-panel.light .ulearn-card-row + .ulearn-card-row {border-top:0.5px solid rgba(0,0,0,0.04)}
-                .ulearn-panel.light .ulearn-card-title {color:#999}
-                .ulearn-panel.light .ulearn-rate-value {color:#333}
-                .ulearn-panel.light .ulearn-rate-unit {color:#999}
-                .ulearn-panel.light .ulearn-rate-btn.minus {background:rgba(0,0,0,0.05);color:#666}
-                .ulearn-panel.light .ulearn-rate-btn.minus:hover {background:rgba(0,0,0,0.1);color:#333}
-                .ulearn-panel.light .ulearn-toggle {background:#ccc}
-                .ulearn-panel.light .ulearn-toggle.active {background:#2ecc71}
-                .ulearn-panel.light .ulearn-toggle-knob {background:#fff}
-                .ulearn-panel.light .ulearn-toggle-btn {background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.08);color:#666}
-                .ulearn-panel.light .ulearn-toggle-btn:hover {background:rgba(0,0,0,0.1);color:#333}
+                .ulearn-panel.light .ulearn-card-title {color:#8c8fa1}
+                .ulearn-panel.light .ulearn-rate-value {color:#4c4f69}
+                .ulearn-panel.light .ulearn-rate-unit {color:#8c8fa1}
+                .ulearn-panel.light .ulearn-rate-btn.minus {background:rgba(0,0,0,0.04);color:#6c6f85}
+                .ulearn-panel.light .ulearn-rate-btn.minus:hover {background:rgba(0,0,0,0.08);color:#4c4f69}
                 .ulearn-panel.light .ulearn-progress-bar {background:rgba(0,0,0,0.06)}
-                .ulearn-panel.light .ulearn-progress-text {color:#999}
-                .ulearn-panel.light .ulearn-log {background:rgba(0,0,0,0.04)}
-                .ulearn-panel.light .ulearn-log::-webkit-scrollbar-thumb {background:rgba(0,0,0,0.15)}
-                .ulearn-panel.light .log-time {color:#999}
-                .ulearn-panel.light .ulearn-save-btn {background:#378ADD}
-                .ulearn-panel.light .ulearn-save-btn:hover {background:#2a6fb8}
-                .ulearn-panel.light .ulearn-clear-btn {background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.06);color:#999}
-                .ulearn-panel.light .ulearn-clear-btn:hover {background:rgba(0,0,0,0.08);color:#666}
+                .ulearn-panel.light .ulearn-progress-text {color:#8c8fa1}
+                .ulearn-panel.light .ulearn-toggle {background:#ccd0da}
+                .ulearn-panel.light .ulearn-toggle.active {background:#a6e3a1}
+                .ulearn-panel.light .ulearn-toggle-knob {background:#ffffff}
+                .ulearn-panel.light .ulearn-toggle-btn {background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.06);color:#6c6f85}
+                .ulearn-panel.light .ulearn-toggle-btn:hover {background:rgba(0,0,0,0.08);color:#4c4f69}
+                .ulearn-panel.light .ulearn-log {background:#e6e9ef}
+                .ulearn-panel.light .ulearn-log::-webkit-scrollbar-thumb {background:rgba(0,0,0,0.12)}
+                .ulearn-panel.light .log-time {color:#8c8fa1}
+                .ulearn-panel.light .ulearn-save-btn {background:#89b4fa;color:#1e1e2e}
+                .ulearn-panel.light .ulearn-save-btn:hover {background:#74c7ec}
+                .ulearn-panel.light .ulearn-clear-btn {background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.06);color:#8c8fa1}
+                .ulearn-panel.light .ulearn-clear-btn:hover {background:rgba(0,0,0,0.08);color:#6c6f85}
             `;
             document.head.appendChild(style);
         }
@@ -905,7 +905,7 @@
             panel.className = 'ulearn-panel';
             panel.innerHTML = `
                 <div class="ulearn-header">
-                    <span class="ulearn-header-title">DGUT 优学院助手 v2.2</span>
+                    <span class="ulearn-header-title">DGUT 优学院助手 v2.3</span>
                     <div class="ulearn-header-btns">
                         <div class="ulearn-header-btn" id="themeBtn" title="切换主题">🌓</div>
                         <div class="ulearn-header-btn" id="collapseBtn" title="折叠">▼</div>
@@ -1076,8 +1076,9 @@
                 const offsetY = e.clientY - this.panel.offsetTop;
 
                 const moveHandler = (e) => {
+                    const maxTop = window.innerHeight - this.panel.offsetHeight - 10;
+                    const newTop = Math.max(10, Math.min(maxTop, e.clientY - offsetY));
                     this.panel.style.left = `${e.clientX - offsetX}px`;
-                    const newTop = Math.max(10, e.clientY - offsetY);
                     this.panel.style.top = `${newTop}px`;
                     this.panel.style.right = 'auto';
                 };
